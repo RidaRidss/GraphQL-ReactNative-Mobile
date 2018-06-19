@@ -10,6 +10,7 @@ import {
 import ExchangeRateList from "./data/list";
 
 
+
 import { ApolloClient } from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -17,10 +18,12 @@ import { ApolloProvider } from "react-apollo";
 
 
 
+
 const client = new ApolloClient({
   link: new HttpLink({
     uri: `https://w5xlvm3vzz.lp.gql.zone/graphql`
   }),
+  logger,
   cache: new InMemoryCache()
   // for SSR, use:
   // cache: new Cache().restore(window.__APOLLO_STATE__ || {})
@@ -35,13 +38,14 @@ export default class App extends Component<{}> {
 
   render() {
    const { currency } = this.state;
+ 
     return (
         <ApolloProvider client={client}>
         <View style={styles.container}>
-        <Text style={styles.welcome}>
-                Welcome to React & Apollo  🚀
-              </Text>
-             <Text style={styles.heading}>{`1 ${this.state.currency}`}</Text>
+            <Text small="red" style={styles.welcome}>
+                    Welcome to React & Apollo  🚀
+            </Text>
+        <Text style={styles.heading}>{`1 ${this.state.currency}`}</Text>
         <ExchangeRateList
           currency={currency}
           onCurrencyChange={this.onCurrencyChange}
