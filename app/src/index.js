@@ -23,7 +23,6 @@ const client = new ApolloClient({
   link: new HttpLink({
     uri: `https://w5xlvm3vzz.lp.gql.zone/graphql`
   }),
-  logger,
   cache: new InMemoryCache()
   // for SSR, use:
   // cache: new Cache().restore(window.__APOLLO_STATE__ || {})
@@ -42,8 +41,8 @@ export default class App extends Component<{}> {
     return (
         <ApolloProvider client={client}>
         <View style={styles.container}>
-            <Text small="red" style={styles.welcome}>
-                    Welcome to React & Apollo  🚀
+            <Text style={styles.welcome}>
+               Welcome to React & Apollo  🚀
             </Text>
         <Text style={styles.heading}>{`1 ${this.state.currency}`}</Text>
         <ExchangeRateList
