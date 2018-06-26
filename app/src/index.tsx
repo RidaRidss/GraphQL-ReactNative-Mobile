@@ -14,9 +14,11 @@ import ExchangeRateList from "./data/list";
 import { ApolloClient } from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider, Query, Mutation } from "react-apollo";
+import { withClientState } from "apollo-link-state";
+import gql from "graphql-tag";
 
-
+const cache = new InMemoryCache();
 
 
 const client = new ApolloClient({
@@ -30,27 +32,27 @@ const client = new ApolloClient({
 
 
 export default class App extends Component<{}> {
-    state = {
+  state = {
     currency: "USD"
   };
-    onCurrencyChange = currency => this.setState(() => ({ currency }));
+  onCurrencyChange = currency => this.setState(() => ({ currency }));
 
   render() {
-   const { currency } = this.state;
- 
+    const { currency } = this.state;
+
     return (
-        <ApolloProvider client={client}>
+      <ApolloProvider client={client}>
         <View style={styles.container}>
-            <Text style={styles.welcome}>
-               Welcome to React & Apollo  🚀
+          <Text style={styles.welcome}>
+            Welcome to React & Apollo  🚀
             </Text>
-        <Text style={styles.heading}>{`1 ${this.state.currency}`}</Text>
-        <ExchangeRateList
-          currency={currency}
-          onCurrencyChange={this.onCurrencyChange}
-        />
-          </View>
-        </ApolloProvider>
+          <Text style={styles.heading}>{`1 ${this.state.currency}`}</Text>
+          <ExchangeRateList
+            currency={currency}
+            onCurrencyChange={this.onCurrencyChange}
+          />
+        </View>
+      </ApolloProvider>
     );
   }
 }
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-    heading: {
+  heading: {
     fontSize: 20,
     fontWeight: "200",
     color: "white",

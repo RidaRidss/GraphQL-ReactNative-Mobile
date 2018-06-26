@@ -3,8 +3,31 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "start": "react-native start",
+    "precommit": "yarn test",
+    "android": "react-native run-android",
+    "android-bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "ios": "react-native run-ios --simulator=\"iPhone 7\"",
+    "ios-device": "react-native run-ios",
+    "test-watch": "node node_modules/jest/bin/jest.js --watch -u --no-cache",
+    "test": "node node_modules/jest/bin/jest.js --ci --no-cache",
+    "postinstall": "node ./android-release-gradle-fix.js",
+    "clean": "rimraf artifacts",
+    "build": "./node_modules/typescript/bin/tsc",
+    "build-win": "tsc",
+    "build-generate-win": "yarn generate-dir-win && yarn generate-ts && tsc",
+    "build-watch": "./node_modules/typescript/bin/tsc --watch",
+    "build-generate-watch-win": "yarn generate-dir-win && yarn generate-ts && tsc --watch",
+    "build-watch-win": "tsc --watch",
+    "lint": "tslint --fix source/**/*.ts",
+    "generate": "mkdir -p __generated__ && yarn generate-ts",
+    "generate-win": "yarn generate-dir-win && yarn generate-ts",
+    "generate-ts": "apollo-codegen introspect-schema http://localhost:4000/graphql --output __generated__/schema.json && apollo-codegen generate **/*.graphql --schema __generated__/schema.json --target typescript --add-typename --output __generated__/types.ts",
+    "generate-dir-win": "IF NOT EXIST __generated__ mkdir __generated__"
+  },
+  "remotedev": {
+    "hostname": "localhost",
+    "port": 8081
   },
   "dependencies": {
     "apisauce": "^0.15.2",
@@ -24,13 +47,14 @@
     "redux-logger": "^3.0.6"
   },
   "devDependencies": {
-    "@types/jest": "^23.1.1",
-    "@types/react": "^16.4.1",
-    "@types/react-native": "^0.55.22",
+    "@types/jest": "^23.1.2",
+    "@types/react": "^16.4.2",
+    "@types/react-native": "^0.55.25",
     "@types/react-test-renderer": "^16.0.1",
     "babel-jest": "23.0.1",
     "babel-preset-react-native": "4.0.0",
     "jest": "23.1.0",
+    "react-addons-test-utils": "^15.6.2",
     "react-native-typescript-transformer": "^1.2.10",
     "react-test-renderer": "16.3.1",
     "ts-jest": "^22.4.6",
