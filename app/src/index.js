@@ -57,7 +57,6 @@ export default class App extends Component<{}> {
   }
 }
 AppRegistry.registerComponent("app", () => App);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
